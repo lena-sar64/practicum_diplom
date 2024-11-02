@@ -1,0 +1,28 @@
+Задание 1:
+вывод логинов и количества заказов 
+scooter_rent=# SELECT c.login AS login, COUNT(DISTINCT o.track) AS count_delivery
+scooter_rent-# FROM "Couriers" AS c
+scooter_rent-# LEFT JOIN "Orders" AS o ON o."courierId" = c.id
+scooter_rent-# WHERE o."inDelivery" = true
+scooter_rent-# GROUP BY c.login;
+
+скриншот с результатом запроса https://disk.yandex.ru/i/4QD_o790MVgx2Q 
+подсчет количества заказов делала по полю track, т.к. на данный момент есть баг 
+с дублированием принятых заказов. но можно вместо COUNT(DISTINCT o.track) сделать COUNT(DISTINCT o.id) -
+после исправления бага должно работать корректно 
+
+Задание 2:
+вывод заказов и их статусов
+scooter_rent=# SELECT DISTINCT track,
+scooter_rent-# CASE
+scooter_rent-# WHEN finished = true THEN 2
+scooter_rent-# WHEN cancelled = true THEN -1
+scooter_rent-# WHEN "inDelivery" = true THEN 1
+scooter_rent-# ELSE 0
+scooter_rent-# END
+scooter_rent-# FROM "Orders";
+
+
+скриншот с результатом запроса https://yadi.sk/d/gwTTD3bFXeVrDQ
+так же из-за бага дублируются заказы, поэтому использовала DISTINCT track. после исправления бага можно
+будем в запросе писать SELECT track
